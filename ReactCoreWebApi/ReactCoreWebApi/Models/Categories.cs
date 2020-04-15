@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
 {
+    [Table("Categories")]
     public partial class Categories
     {
         public Categories()
@@ -15,6 +17,6 @@ namespace ReactCoreWebApi.Models
         public string Description { get; set; }
         public byte[] Picture { get; set; }
 
-        public ICollection<Products> Products { get; set; }
+        public virtual ICollection<Products> Products { get; set; }
     }
 }

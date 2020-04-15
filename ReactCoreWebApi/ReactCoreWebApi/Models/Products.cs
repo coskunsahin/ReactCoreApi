@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
 {
+    [Table(Products)]
     public partial class Products
     {
         public Products()
@@ -21,8 +23,8 @@ namespace ReactCoreWebApi.Models
         public short? ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
 
-        public Categories Category { get; set; }
-        public Suppliers Supplier { get; set; }
-        public ICollection<OrderDetails> OrderDetails { get; set; }
+        public virtual Categories Category { get; set; }
+        public virtual Suppliers Supplier { get; set; }
+        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ReactCoreWebApi.Models
 {
+    [Table("Employees")]
     public partial class Employees
     {
         public Employees()
@@ -31,9 +32,9 @@ namespace ReactCoreWebApi.Models
         public int? ReportsTo { get; set; }
         public string PhotoPath { get; set; }
 
-        public Employees ReportsToNavigation { get; set; }
-        public ICollection<EmployeeTerritories> EmployeeTerritories { get; set; }
-        public ICollection<Employees> InverseReportsToNavigation { get; set; }
-        public ICollection<Orders> Orders { get; set; }
+        public virtual Employees ReportsToNavigation { get; set; }
+        public virtual ICollection<EmployeeTerritories> EmployeeTerritories { get; set; }
+        public virtual ICollection<Employees> InverseReportsToNavigation { get; set; }
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
 {
+    [Table("Orders")]
     public partial class Orders
     {
         public Orders()
@@ -25,9 +27,9 @@ namespace ReactCoreWebApi.Models
         public string ShipPostalCode { get; set; }
         public string ShipCountry { get; set; }
 
-        public Customers Customer { get; set; }
-        public Employees Employee { get; set; }
-        public Shippers ShipViaNavigation { get; set; }
-        public ICollection<OrderDetails> OrderDetails { get; set; }
+        public virtual Customers Customer { get; set; }
+        public virtual Employees Employee { get; set; }
+        public virtual Shippers ShipViaNavigation { get; set; }
+        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
     }
 }

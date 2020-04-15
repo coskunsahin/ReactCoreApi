@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
 {
+    [Table(Customers)]
     public partial class Customers
     {
         public Customers()
@@ -23,7 +25,7 @@ namespace ReactCoreWebApi.Models
         public string Phone { get; set; }
         public string Fax { get; set; }
 
-        public ICollection<CustomerCustomerDemo> CustomerCustomerDemo { get; set; }
-        public ICollection<Orders> Orders { get; set; }
+        public virtual ICollection<CustomerCustomerDemo> CustomerCustomerDemo { get; set; }
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

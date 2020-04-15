@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ReactCoreWebApi.Models
 {
+    
     public class Productentity
     {
         public int id { get; set; }

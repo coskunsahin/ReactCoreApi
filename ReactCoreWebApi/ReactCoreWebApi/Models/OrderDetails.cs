@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
 {
+    [Table("OrderDetails")]
     public partial class OrderDetails
     {
         public int OrderId { get; set; }
@@ -11,7 +13,7 @@ namespace ReactCoreWebApi.Models
         public short Quantity { get; set; }
         public float Discount { get; set; }
 
-        public Orders Order { get; set; }
-        public Products Product { get; set; }
+        public virtual Orders Order { get; set; }
+        public virtual Products Product { get; set; }
     }
 }
