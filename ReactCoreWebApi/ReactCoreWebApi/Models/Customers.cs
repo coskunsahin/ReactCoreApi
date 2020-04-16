@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
 {
-    [Table(Customers)]
+    [Table("Customers")]
     public partial class Customers
     {
         public Customers()
