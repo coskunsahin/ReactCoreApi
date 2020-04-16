@@ -14,5 +14,6 @@ namespace ReactCoreWebApi.Models
         public short? quantity { get; set; }
         public decimal price { get; set; }
         public int categoriid { get; set; }
+        public int  categoriname { get; set; }
     }
 }
