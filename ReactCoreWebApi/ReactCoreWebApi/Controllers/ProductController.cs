@@ -182,7 +182,62 @@ namespace ReactCoreWebApi.Controllers
                 return BadRequest();
             }
         }
+        [Produces("application/json")]
+        [HttpGet("getcategori/{CategoryId}")]
+        public  async Task<IActionResult> getcategori(int CategoryId)
+        {
+            var categori = db.Products.Where(i => i.CategoryId == CategoryId).Select(p => new
+            {
+                id = p.ProductId,
+                name = p.ProductName,
+                quality = p.UnitsInStock,
+                price = p.UnitPrice,
+                categoriid = p.CategoryId,
+                categoriname = p.Category.CategoryName,
 
-        
+
+            }).SingleOrDefault(); 
+
+            return Ok(categori);
+        }
+        [Produces("application/json")]
+        [HttpGet]
+        public async Task<IActionResult> getproduct(int ProductId)
+        {
+            var product = db.Products.Where(p => p.ProductId == ProductId).Select(p => new
+            {
+                id = p.ProductId,
+                name = p.ProductName,
+                quality = p.UnitsInStock,
+                price = p.UnitPrice,
+                categoriid = p.CategoryId,
+                categoriname = p.Category.CategoryName,
+
+
+            }).SingleOrDefault();
+            ;
+
+
+            return Ok(product);
+        }
+        [Produces("application/json")]
+        [HttpGet("productname/{name}")]
+        public async Task<IActionResult> getproductname(string productname)
+        {
+            var product = db.Products.Where(i => i.ProductName == productname).Select(p => new
+            {
+                id = p.ProductId,
+                name = p.ProductName,
+                quality = p.UnitsInStock,
+                price = p.UnitPrice,
+                categoriid = p.CategoryId,
+                categoriname = p.Category.CategoryName,
+
+
+            }).SingleOrDefault();
+            ;
+
+            return Ok(product);
+        }
     }
 }
