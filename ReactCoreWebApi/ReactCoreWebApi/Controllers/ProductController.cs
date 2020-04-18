@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 using ReactCoreWebApi.Models;
 namespace ReactCoreWebApi.Controllers
 {
@@ -22,7 +22,7 @@ namespace ReactCoreWebApi.Controllers
         {
             try
             {
-                var products = db.Products.Select(p => new
+                var products = await db.Products.Select(p => new
                 {
                     id = p.ProductId,
                     name = p.ProductName,
@@ -32,7 +32,7 @@ namespace ReactCoreWebApi.Controllers
                     categoriname = p.Category.CategoryName,
 
 
-                }).ToList();
+                }).ToListAsync();
                 return Ok(products);
             }
             catch
@@ -47,7 +47,7 @@ namespace ReactCoreWebApi.Controllers
         {
             try
             {
-                var products = db.Products.Where(p => p.ProductName.Contains(keyword)).Select(p => new
+                var products =await db.Products.Where(p => p.ProductName.Contains(keyword)).Select(p => new
                 {
                     id = p.ProductId,
                     name = p.ProductName,
@@ -56,7 +56,7 @@ namespace ReactCoreWebApi.Controllers
                     categoriid = p.CategoryId,
                     categoriname = p.Category.CategoryName,
 
-                }).ToList();
+                }).ToListAsync();
                 return Ok(products);
             }
             catch
@@ -66,11 +66,13 @@ namespace ReactCoreWebApi.Controllers
         }
 
         [HttpGet("Between/{min}/{max}")]
-        public async Task<IActionResult> between(decimal min, decimal max)
+
+        public async Task<ActionResult<Products>>  between(decimal min, decimal max)
+
         {
             try
             {
-                var products = db.Products.Where(p => p.UnitPrice >= min && p.UnitPrice <= max).Select(p => new
+                var products =await db.Products.Where(p => p.UnitPrice >= min && p.UnitPrice <= max).Select(p => new
                 {
                     id = p.ProductId,
                     name = p.ProductName,
@@ -79,7 +81,7 @@ namespace ReactCoreWebApi.Controllers
                     categoriid = p.CategoryId,
                     categoriname = p.Category.CategoryName,
 
-                }).ToList();
+                }).ToListAsync();
                 return Ok(products);
             }
             catch
@@ -93,7 +95,7 @@ namespace ReactCoreWebApi.Controllers
         {
             try
             {
-                var products = db.Products.Where(p => p.ProductId == id).Select(p => new
+                var products = await db.Products.Where(p => p.ProductId == id).Select(p => new
                 {
                     id = p.ProductId,
                     name = p.ProductName,
@@ -103,7 +105,7 @@ namespace ReactCoreWebApi.Controllers
                     categoriname = p.Category.CategoryName,
 
 
-                }).SingleOrDefault();
+                }).SingleOrDefaultAsync();
                 return Ok(products);
             }
             catch
@@ -132,7 +134,7 @@ namespace ReactCoreWebApi.Controllers
 
                 db.Products.Add(product);
 
-                db.SaveChanges();
+               await db.SaveChangesAsync();
                 return Ok(product);
             }
             catch
@@ -148,7 +150,7 @@ namespace ReactCoreWebApi.Controllers
         {
             try
             {
-                var product = db.Products.Find(productentity.id);
+                var product =  db.Products.Find(productentity.id);
 
                 product.ProductName = productentity.name;
                 product.UnitsInStock = productentity.quantity;
@@ -157,7 +159,7 @@ namespace ReactCoreWebApi.Controllers
 
 
 
-                db.SaveChanges();
+               await db.SaveChangesAsync();
                 return Ok(product);
             }
             catch
@@ -175,7 +177,7 @@ namespace ReactCoreWebApi.Controllers
 
                 db.Products.Remove(product);
 
-                db.SaveChanges();
+           await     db.SaveChangesAsync();
                 return Ok(product);
             }
             catch
@@ -187,7 +189,7 @@ namespace ReactCoreWebApi.Controllers
         [HttpGet("getcategori")]
         public  async Task<IActionResult> getcategori(int CategoryId)
         {
-            var categori = db.Products.Where(i => i.CategoryId == CategoryId).ToList(); 
+            var categori =await db.Products.Where(i => i.CategoryId == CategoryId).ToListAsync(); 
 
             return Ok(categori);
         }
@@ -195,7 +197,7 @@ namespace ReactCoreWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> getproduct(int ProductId)
         {
-            var product = db.Products.Where(p => p.ProductId == ProductId).Select(p => new
+            var product =await db.Products.Where(p => p.ProductId == ProductId).Select(p => new
             {
                 id = p.ProductId,
                 name = p.ProductName,
@@ -205,7 +207,7 @@ namespace ReactCoreWebApi.Controllers
                 categoriname = p.Category.CategoryName,
 
 
-            }).SingleOrDefault();
+            }).SingleOrDefaultAsync();
             ;
 
 
@@ -215,7 +217,7 @@ namespace ReactCoreWebApi.Controllers
         [HttpGet("productname")]
         public async Task<IActionResult> getproductname(string productname)
         {
-            var product = db.Products.Where(i => i.ProductName == productname).Select(p => new
+            var product =await db.Products.Where(i => i.ProductName == productname).Select(p => new
             {
                 id = p.ProductId,
                 name = p.ProductName,
@@ -225,7 +227,7 @@ namespace ReactCoreWebApi.Controllers
                 categoriname = p.Category.CategoryName,
 
 
-            }).SingleOrDefault();
+            }).SingleOrDefaultAsync();
             ;
 
             return Ok(product);
