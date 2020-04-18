@@ -18,6 +18,8 @@ namespace ReactCoreWebApi
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +30,17 @@ namespace ReactCoreWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:3000",
+                                                          "http://www.contoso.com");
+                                  });
+            });
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
@@ -46,6 +59,9 @@ options.UseSqlServer(Configuration.GetConnectionString("NorthwindConnection")));
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            
+
             app.UseSwagger();
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
@@ -64,6 +80,8 @@ options.UseSqlServer(Configuration.GetConnectionString("NorthwindConnection")));
                 app.UseHsts();
             }
 
+
+            app.UseCors();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

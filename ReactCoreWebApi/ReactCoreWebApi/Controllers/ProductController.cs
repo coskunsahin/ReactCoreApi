@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using ReactCoreWebApi.Models;
 namespace ReactCoreWebApi.Controllers
 {
-    
+    [EnableCors("_myAllowSpecificOrigins")]
     [ApiController]
     [Produces("application/json")]
     [Route("api/Product")]
@@ -183,20 +184,10 @@ namespace ReactCoreWebApi.Controllers
             }
         }
         [Produces("application/json")]
-        [HttpGet("getcategori/{CategoryId}")]
+        [HttpGet("getcategori")]
         public  async Task<IActionResult> getcategori(int CategoryId)
         {
-            var categori = db.Products.Where(i => i.CategoryId == CategoryId).Select(p => new
-            {
-                id = p.ProductId,
-                name = p.ProductName,
-                quality = p.UnitsInStock,
-                price = p.UnitPrice,
-                categoriid = p.CategoryId,
-                categoriname = p.Category.CategoryName,
-
-
-            }).SingleOrDefault(); 
+            var categori = db.Products.Where(i => i.CategoryId == CategoryId).ToList(); 
 
             return Ok(categori);
         }
@@ -221,7 +212,7 @@ namespace ReactCoreWebApi.Controllers
             return Ok(product);
         }
         [Produces("application/json")]
-        [HttpGet("productname/{name}")]
+        [HttpGet("productname")]
         public async Task<IActionResult> getproductname(string productname)
         {
             var product = db.Products.Where(i => i.ProductName == productname).Select(p => new
