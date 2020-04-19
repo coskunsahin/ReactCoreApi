@@ -8,12 +8,12 @@ namespace ReactCoreWebApi.Models
     
     public class Productentity
     {
-        public int id { get; set; }
-        public string name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
-        public short? quantity { get; set; }
-        public decimal price { get; set; }
-        public int categoriid { get; set; }
-        public int  categoriname { get; set; }
+        public short? Quantity { get; set; }
+        public decimal Price { get; set; }
+        public int Categoriid { get; set; }
+        public int  Categoriname { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace ReactCoreWebApi.Controllers
         private NorthwindContext db = new NorthwindContext();
 
         [HttpGet("findall")]
-        public async Task<IActionResult> findAll()
+        public async Task<IActionResult> FindAll()
         {
             try
             {
@@ -67,7 +67,7 @@ namespace ReactCoreWebApi.Controllers
 
         [HttpGet("Between/{min}/{max}")]
 
-        public async Task<ActionResult<Products>>  between(decimal min, decimal max)
+        public async Task<ActionResult<Products>>  Between(decimal min, decimal max)
 
         {
             try
@@ -91,7 +91,7 @@ namespace ReactCoreWebApi.Controllers
         }
 
         [HttpGet("Find/{id}")]
-        public async Task<IActionResult> find(int id)
+        public async Task<IActionResult> Find(int id)
         {
             try
             {
@@ -122,11 +122,11 @@ namespace ReactCoreWebApi.Controllers
             {
                 var product = new Products()
                 {
-                    ProductName = productentity.name,
-                    UnitPrice = productentity.price,
+                    ProductName = productentity.Name,
+                    UnitPrice = productentity.Price,
 
-                    UnitsInStock = productentity.quantity,
-                    CategoryId = productentity.categoriid
+                    UnitsInStock = productentity.Quantity,
+                    CategoryId = productentity.Categoriid
 
 
                 };
@@ -150,12 +150,12 @@ namespace ReactCoreWebApi.Controllers
         {
             try
             {
-                var product =  db.Products.Find(productentity.id);
+                var product =  db.Products.Find(productentity.Id);
 
-                product.ProductName = productentity.name;
-                product.UnitsInStock = productentity.quantity;
-                product.UnitPrice = productentity.price;
-                product.CategoryId = productentity.categoriid;
+                product.ProductName = productentity.Name;
+                product.UnitsInStock = productentity.Quantity;
+                product.UnitPrice = productentity.Price;
+                product.CategoryId = productentity.Categoriid;
 
 
 
@@ -169,7 +169,7 @@ namespace ReactCoreWebApi.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -185,17 +185,10 @@ namespace ReactCoreWebApi.Controllers
                 return BadRequest();
             }
         }
-        [Produces("application/json")]
-        [HttpGet("getcategori")]
-        public  async Task<IActionResult> getcategori(int CategoryId)
-        {
-            var categori =await db.Products.Where(i => i.CategoryId == CategoryId).ToListAsync(); 
-
-            return Ok(categori);
-        }
+    
         [Produces("application/json")]
         [HttpGet]
-        public async Task<IActionResult> getproduct(int ProductId)
+        public async Task<IActionResult> Getproduct(int ProductId)
         {
             var product =await db.Products.Where(p => p.ProductId == ProductId).Select(p => new
             {
@@ -215,7 +208,7 @@ namespace ReactCoreWebApi.Controllers
         }
         [Produces("application/json")]
         [HttpGet("productname")]
-        public async Task<IActionResult> getproductname(string productname)
+        public async Task<IActionResult> Getproductname(string productname)
         {
             var product =await db.Products.Where(i => i.ProductName == productname).Select(p => new
             {

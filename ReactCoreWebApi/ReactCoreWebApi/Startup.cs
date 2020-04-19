@@ -11,8 +11,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using ReactCoreWebApi.Models;
+using Microsoft.AspNetCore.Internal;
+ 
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Internal;
+ 
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Session;
+using System.Net;
 
 namespace ReactCoreWebApi
 {
@@ -36,10 +45,15 @@ namespace ReactCoreWebApi
                                   builder =>
                                   {
                                       builder.WithOrigins("http://localhost:3000",
-                                                          "http://www.contoso.com")
+                                                          "http://localhost:3001")
                                          .AllowAnyHeader()
                                         .AllowAnyMethod()
-                                        .WithMethods("PUT", "DELETE", "GET","POST");
+                                        
+                                      .WithHeaders(HeaderNames.ContentType, "x-custom-header")
+                                      .WithMethods("PUT", "DELETE", "GET", "OPTIONS","POST");
+
+
+
                                       ;
                                       ;
                                   });
@@ -84,11 +98,20 @@ options.UseSqlServer(Configuration.GetConnectionString("NorthwindConnection")));
             {
                 app.UseHsts();
             }
-
-
+ 
             app.UseCors();
+
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseCors();
+
+             
+
+            app.UseMvcWithDefaultRoute();
+         
+           
+
+          
         }
     }
 }
