@@ -36,7 +36,7 @@ namespace ReactCoreWebApi
                                   builder =>
                                   {
                                       builder.WithOrigins("http://localhost:3000",
-                                                          "http://www.contoso.com")
+                                                          "http://localhost:3001")
                                          .AllowAnyHeader()
                                         .AllowAnyMethod()
                                         .WithMethods("PUT", "DELETE", "GET","POST");

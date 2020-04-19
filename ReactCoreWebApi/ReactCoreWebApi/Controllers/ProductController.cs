@@ -90,7 +90,7 @@ namespace ReactCoreWebApi.Controllers
             }
         }
 
-        [HttpGet("Find/{id}")]
+        [HttpGet("Find")]
         public async Task<IActionResult> find(int id)
         {
             try
