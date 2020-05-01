@@ -18,36 +18,60 @@ namespace ReactCoreWebApi.Controllers
     public class OrderController : ControllerBase
     {
         private NorthwindContext db = new NorthwindContext();
-       
-           
 
-            [HttpGet("SHOW")]
-            public async Task<IActionResult> FindAll()
+
+
+        [HttpGet("SHOW")]
+        public async Task<IActionResult> FindAll()
+        {
+            try
             {
-                try
+                var orders = await db.Orders.Select(p => new
                 {
-                    var orders = await db.Orders.Select(p => new
-                    {
-                        orderID = p.OrderId,
-                        ememployeeId = p.EmployeeId,
-                        orderDate = p.OrderDate,
-                        requiredDate = p.RequiredDate,
-                        shipPostalCode=p.ShipPostalCode
+                    orderID = p.OrderId,
+                    ememployeeId = p.EmployeeId,
+                    orderDate = p.OrderDate,
+                    requiredDate = p.RequiredDate,
+                    shipPostalCode = p.ShipPostalCode
 
 
 
-                    }).ToListAsync();
-                    return Ok(orders);
-                }
-                catch
-                {
-                    return BadRequest();
-                }
-
+                }).ToListAsync();
+                return Ok(orders);
             }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
+        [HttpGet("findalls")]
+        public async Task<IActionResult> FindAlls()
+        {
+            try
+            {
+                var orders = await db.Orders.Select(p => new
+                {
+                    orderID = p.OrderId,
+                    ememployeeId = p.EmployeeId,
+                    orderDate = p.OrderDate,
+                    requiredDate = p.RequiredDate,
+                    shipPostalCode = p.ShipPostalCode
+
+
+
+                }).ToListAsync();
+                return Ok(orders);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
         [Produces("application/json")]
         [HttpGet("search")]
-            public async Task<ActionResult<Orders>> search(DateTime min, DateTime max)
+        public async Task<ActionResult<Orders>> search(DateTime min, DateTime max)
         {
             var orders = await db.Orders.Where(p => p.OrderDate >= min && p.OrderDate <= max)
             //    .Select(p => new
@@ -62,10 +86,12 @@ namespace ReactCoreWebApi.Controllers
 
             //})
 
-           
+
             .ToListAsync();
             return Ok(orders);
         }
-        }
-
     }
+
+
+
+}
