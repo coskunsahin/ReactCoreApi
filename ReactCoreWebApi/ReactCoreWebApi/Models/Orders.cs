@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
@@ -11,8 +12,9 @@ namespace ReactCoreWebApi.Models
         {
             OrderDetails = new HashSet<OrderDetails>();
         }
-
+        [Key]
         public int OrderId { get; set; }
+        [Required]
         public string CustomerId { get; set; }
         public int? EmployeeId { get; set; }
         public DateTime? OrderDate { get; set; }
@@ -26,10 +28,11 @@ namespace ReactCoreWebApi.Models
         public string ShipRegion { get; set; }
         public string ShipPostalCode { get; set; }
         public string ShipCountry { get; set; }
-
-        public virtual Customers Customer { get; set; }
+         public virtual Customers Customer { get; set; }
         public virtual Employees Employee { get; set; }
         public virtual Shippers ShipViaNavigation { get; set; }
+       
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+       
     }
 }

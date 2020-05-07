@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReactCoreWebApi.Models
@@ -7,6 +8,8 @@ namespace ReactCoreWebApi.Models
     [Table("OrderDetails")]
     public partial class OrderDetails
     {
+        [ForeignKey("OrderId")]
+
         public int OrderId { get; set; }
         public int ProductId { get; set; }
         public decimal UnitPrice { get; set; }

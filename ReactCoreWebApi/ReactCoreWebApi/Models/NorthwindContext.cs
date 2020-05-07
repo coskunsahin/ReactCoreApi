@@ -3,18 +3,23 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
+using ReactCoreWebApi.Controllers;
 
 namespace ReactCoreWebApi.Models
 {
     public partial class NorthwindContext : DbContext
     {
+        
+
         public NorthwindContext()
         {
+            
         }
 
         public NorthwindContext(DbContextOptions<NorthwindContext> options)
             : base(options)
         {
+             
         }
 
         public virtual DbSet<Categories> Categories { get; set; }
@@ -30,6 +35,7 @@ namespace ReactCoreWebApi.Models
         public virtual DbSet<Shippers> Shippers { get; set; }
         public virtual DbSet<Suppliers> Suppliers { get; set; }
         public virtual DbSet<Territories> Territories { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -466,5 +472,7 @@ namespace ReactCoreWebApi.Models
                     .HasConstraintName("FK_Territories_Region");
             });
         }
+
+       
     }
 }

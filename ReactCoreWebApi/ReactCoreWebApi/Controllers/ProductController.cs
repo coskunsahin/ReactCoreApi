@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using ReactCoreWebApi.Models;
+
+
+
 namespace ReactCoreWebApi.Controllers
 {
     [EnableCors("_myAllowSpecificOrigins")]
@@ -20,13 +24,14 @@ namespace ReactCoreWebApi.Controllers
         [HttpGet("findall")]
         public async Task<IActionResult> FindAll()
         {
+           
             try
             {
                 var products = await db.Products.Select(p => new
                 {
                     id = p.ProductId,
                     name = p.ProductName,
-                    quality = p.UnitsInStock,
+                    quantity = p.UnitsInStock,
                     price = p.UnitPrice,
                     categoriid = p.CategoryId,
                     categoriname = p.Category.CategoryName,
@@ -47,11 +52,11 @@ namespace ReactCoreWebApi.Controllers
         {
             try
             {
-                var products =await db.Products.Where(p => p.ProductName.Contains(keyword)).Select(p => new
+                var products = await db.Products.Where(p => p.ProductName.Contains(keyword)).Select(p => new
                 {
                     id = p.ProductId,
                     name = p.ProductName,
-                    quality = p.UnitsInStock,
+                    quantity = p.UnitsInStock,
                     price = p.UnitPrice,
                     categoriid = p.CategoryId,
                     categoriname = p.Category.CategoryName,
@@ -67,16 +72,16 @@ namespace ReactCoreWebApi.Controllers
 
         [HttpGet("Between/{min}/{max}")]
 
-        public async Task<ActionResult<Products>>  Between(decimal min, decimal max)
+        public async Task<ActionResult<Products>> Between(decimal min, decimal max)
 
         {
             try
             {
-                var products =await db.Products.Where(p => p.UnitPrice >= min && p.UnitPrice <= max).Select(p => new
+                var products = await db.Products.Where(p => p.UnitPrice >= min && p.UnitPrice <= max).Select(p => new
                 {
                     id = p.ProductId,
                     name = p.ProductName,
-                    quality = p.UnitsInStock,
+                    quantity = p.UnitsInStock,
                     price = p.UnitPrice,
                     categoriid = p.CategoryId,
                     categoriname = p.Category.CategoryName,
@@ -99,7 +104,7 @@ namespace ReactCoreWebApi.Controllers
                 {
                     id = p.ProductId,
                     name = p.ProductName,
-                    quality = p.UnitsInStock,
+                    quantity = p.UnitsInStock,
                     price = p.UnitPrice,
                     categoriid = p.CategoryId,
                     categoriname = p.Category.CategoryName,
@@ -116,31 +121,50 @@ namespace ReactCoreWebApi.Controllers
         [Consumes("application/json")]
         [Produces("application/json")]
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] Productentity productentity)
+        public async Task<ActionResult> Create([FromBody] Productentity productentity)
         {
-            try
+            using (IDbContextTransaction transaction = db.Database.BeginTransaction())
             {
-                var product = new Products()
+                try
                 {
-                    ProductName = productentity.Name,
-                    UnitPrice = productentity.Price,
 
-                    UnitsInStock = productentity.Quantity,
-                    CategoryId = productentity.Categoriid
+                    var product = new Products()
+                    {
+                        ProductId = productentity.id,
+                        ProductName = productentity.name,
+                        UnitPrice = productentity.price,
+                        CategoryId=productentity.categoriid,
+                        UnitsInStock = productentity.quantity,
+                      
 
 
-                };
+                    };
 
 
-                db.Products.Add(product);
+                    db.Products.Add(product);
+                    transaction.Commit();
+                    await db.SaveChangesAsync();
 
-               await db.SaveChangesAsync();
-                return Ok(product);
-            }
-            catch
-            {
-                return BadRequest();
+                    var categories = new Categories()
+                    {
+                       
+                        CategoryName = productentity.categoriname
 
+                    };
+                    db.Categories.Add(categories);
+                   
+                    await db.SaveChangesAsync();
+                    transaction.Commit();
+
+
+                    return Ok(product);
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    return BadRequest();
+
+                }
             }
         }
         [Produces("application/json")]
@@ -150,16 +174,16 @@ namespace ReactCoreWebApi.Controllers
         {
             try
             {
-                var product =  db.Products.Find(productentity.Id);
+                var product = db.Products.Find(productentity.id);
 
-                product.ProductName = productentity.Name;
-                product.UnitsInStock = productentity.Quantity;
-                product.UnitPrice = productentity.Price;
-                product.CategoryId = productentity.Categoriid;
+                product.ProductName = productentity.name;
+                product.UnitsInStock = productentity.quantity;
+                product.UnitPrice = productentity.price;
+                product.CategoryId = productentity.categoriid;
 
 
 
-               await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
                 return Ok(product);
             }
             catch
@@ -177,7 +201,7 @@ namespace ReactCoreWebApi.Controllers
 
                 db.Products.Remove(product);
 
-           await     db.SaveChangesAsync();
+                await db.SaveChangesAsync();
                 return Ok(product);
             }
             catch
@@ -185,12 +209,12 @@ namespace ReactCoreWebApi.Controllers
                 return BadRequest();
             }
         }
-    
+
         [Produces("application/json")]
         [HttpGet]
         public async Task<IActionResult> Getproduct(int ProductId)
         {
-            var product =await db.Products.Where(p => p.ProductId == ProductId).Select(p => new
+            var product = await db.Products.Where(p => p.ProductId == ProductId).Select(p => new
             {
                 id = p.ProductId,
                 name = p.ProductName,
@@ -210,7 +234,7 @@ namespace ReactCoreWebApi.Controllers
         [HttpGet("productname")]
         public async Task<IActionResult> Getproductname(string productname)
         {
-            var product =await db.Products.Where(i => i.ProductName == productname).Select(p => new
+            var product = await db.Products.Where(i => i.ProductName == productname).Select(p => new
             {
                 id = p.ProductId,
                 name = p.ProductName,

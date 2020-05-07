@@ -12,7 +12,7 @@ namespace ReactCoreWebApi.Controllers
     [EnableCors("_myAllowSpecificOrigins")]
     [ApiController]
     [Produces("application/json")]
-    [Route("api/Product")]
+    //[Route("api/Product")]
     public class CategoriController : ControllerBase
     {
 

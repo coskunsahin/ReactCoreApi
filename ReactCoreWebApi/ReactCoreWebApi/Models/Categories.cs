@@ -18,5 +18,7 @@ namespace ReactCoreWebApi.Models
         public byte[] Picture { get; set; }
 
         public virtual ICollection<Products> Products { get; set; }
+
+         
     }
 }
